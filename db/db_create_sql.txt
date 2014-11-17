@@ -1,0 +1,99 @@
+create database HC_DB character set  'utf8' collate utf8_general_ci;
+
+create table user(
+	user_id int not null auto_increment primary key,
+	card_id int,
+	subcard_num varchar(50),
+	user_name varchar(50),
+	user_pwd varchar(32),
+	user_type int,
+	email varchar(60),
+	reset_pwd_flag char(255),
+	phone varchar(16),
+	reg_time datetime,
+	last_log_time datetime,
+	last_log_ip varchar(128),
+	state varchar(20)
+);
+
+create table user_login(
+	user_name int not null auto_increment primary key,
+	user_pwd varchar(32)
+);
+
+create table question(
+	quest_id int not null auto_increment primary key,
+	user_id int,
+	family_history varchar(64),
+	allergy_history varchar(64),
+	immunity_records varchar(64),
+	living_habits varchar(64)
+);
+
+create table body_data(
+	bodyinfo_id int not null auto_increment primary key,
+	temp int,
+	bmi double,
+	lipid varchar(64),
+	blood_pressure varchar(64),
+	blood_sugar varchar(64)
+);
+
+create table therapy_info(
+	therapy_id int not null auto_increment primary key,
+	doctor_name varchar(64),
+	drug_name varchar(64),
+	disease_name varchar(64)
+);
+
+create table exam_report(
+	exam_id int not null auto_increment primary key,
+	username varchar(16),
+	main_symptom_name varchar(100),
+	youyin_name varchar(100),
+	dis_his_name varchar(100),
+	follow_symptom_name varchar(500),
+	result varchar(1000),
+	time datetime,
+	seggest varchar(1000),
+	client varchar(100)
+);
+
+
+
+create table user_therapy
+(
+	user_id int,
+	therapy_id int,
+	date datetime,
+	foreign key(user_id) references user(user_id),
+	foreign key(therapy_id) references therapy_info(therapy_id)
+);
+
+create table user_quest
+(
+	user_id int,
+	quest_id int,
+	date datetime,
+	foreign key(user_id) references user(user_id),
+	foreign key(quest_id) references question(quest_id)
+);
+
+create table user_exam
+(
+	user_id int,
+	exam_id int,
+	date datetime,
+	foreign key(user_id) references user(user_id),
+	foreign key(exam_id) references exam_report(exam_id)
+);
+
+create table drug_info
+(
+	drug_id int not null auto_increment primary key,
+	name varchar(64),
+	func text,
+	drug_usage text,
+	prod_date datetime,
+	manufacturer varchar(64)
+);
